@@ -110,6 +110,22 @@ HAVING n > 3
 ORDER BY n DESC
 ;
 
+-- 8 with film_id but getting same result
+SELECT	i.film_id
+		, r1.customer_id AS Customer_1
+		, r2.customer_id AS Customer_2
+		, COUNT(CONCAT(r1.customer_id, ' ',r2.customer_id)) AS n     
+FROM sakila.rental r1
+	JOIN sakila.rental r2
+		ON  (r1.customer_id <> r2.customer_id) AND (r1.inventory_id = r2.inventory_id) 
+	JOIN sakila.inventory i
+		ON r1.inventory_id = i.inventory_id
+GROUP BY Customer_1
+		, Customer_2	
+HAVING n > 3
+ORDER BY n DESC
+;
+
 -- 9. For each film, list actor that has acted in more films.
 SELECT	fa.actor_id
 		, fa.film_id
